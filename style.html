@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Стиль сайта — Лавандовая ветвь</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pangolin&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Служебная страница: все элементы стиля на одном листе. В меню её нет. -->
+  <header id="site-header"></header>
+  <main>
+    <section class="page-head" data-sprigs>
+      <div class="wrap">
+        <span class="hand">служебная страница</span>
+        <h1>Стиль сайта</h1>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>Цвета</h2>
+        <div class="grid-cards">
+          <div><div class="swatch" style="background:var(--deep)"></div><b>Deep Purple</b> #330C4B</div>
+          <div><div class="swatch" style="background:var(--iris)"></div><b>Purple Iris</b> #51017C</div>
+          <div><div class="swatch" style="background:var(--eminence)"></div><b>Eminence</b> #711E7B</div>
+          <div><div class="swatch" style="background:var(--sunset)"></div><b>Sunset Lavender</b> #B9379D</div>
+          <div><div class="swatch" style="background:var(--fawn)"></div><b>Fawn</b> #E3A88A</div>
+          <div><div class="swatch" style="background:var(--maize)"></div><b>Maize</b> #EEDAA5</div>
+          <div><div class="swatch" style="background:var(--sage)"></div><b>Шалфей</b> #7D9A6A</div>
+          <div><div class="swatch" style="background:var(--moss)"></div><b>Тёмный мох</b> #3E5A3A</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section band">
+      <div class="wrap">
+        <h2>Шрифты</h2>
+        <p class="hand" style="font-size:36px">Segoe Print / Pangolin — акценты</p>
+        <h1>Segoe Print — заголовки</h1>
+        <h3>Segoe Print — подзаголовок</h3>
+        <p>Nunito — основной текст. Уютное пространство, где можно отдохнуть, поиграть, поработать или просто провести время с друзьями.</p>
+        <p class="small muted">Мелкий текст и подписи.</p>
+        <p><span class="todo">[уточнить]</span> — так выглядит заглушка для данных, которых пока нет.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2>Кнопки</h2>
+        <div class="btns">
+          <a class="btn" href="#">Обычная кнопка</a>
+          <a class="btn btn-outline" href="#">Контурная кнопка</a>
+          <button class="btn is-disabled" disabled>Неактивная</button>
+          <a class="btn btn-small" href="#">Маленькая</a>
+        </div>
+        <h2 style="margin-top:32px">Переключатели</h2>
+        <div class="chips"><button class="chip" aria-pressed="true">Выбрано</button><button class="chip" aria-pressed="false">Не выбрано</button></div>
+        <h2 style="margin-top:32px">Карточка и плашки</h2>
+        <div class="grid-cards">
+          <article class="card">
+            <img class="card-img" src="img/mk-soap.jpg" alt="">
+            <div class="card-body">
+              <span class="tag">Мыловарение</span>
+              <h3>Пример карточки</h3>
+              <div class="price">550 ₽</div>
+              <div class="small muted">осталось 6 мест</div>
+              <a class="btn btn-small" href="#">Записаться</a>
+            </div>
+          </article>
+          <div class="plate lav">Плашка лавандовая</div>
+          <div class="plate peach">Плашка персиковая</div>
+          <div class="plate mint">Плашка мятная</div>
+        </div>
+        <p class="demo-note" style="margin-top:24px">Демо: деньги не списываются, заявка не отправлена.</p>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="js/main.js"></script>
+</body>
+</html>

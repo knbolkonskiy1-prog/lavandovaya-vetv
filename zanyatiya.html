@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Досуг — Лавандовая ветвь</title>
+  <meta name="description" content="50 настольных игр, PlayStation, книги, аниме-вечера, квартирники и киновечера в творческом пространстве «Лавандовая ветвь», Пермь.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pangolin&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="site-header"></header>
+
+  <main>
+    <section class="page-head" data-sprigs>
+      <div class="wrap">
+        <span class="hand">скучно не будет</span>
+        <h1>Досуг</h1>
+        <p>Настолки, PlayStation, книги и мероприятия — всё входит в посещение творческого пространства.</p>
+      </div>
+    </section>
+
+    <!-- Настолки -->
+    <section class="section" id="nastolki">
+      <div class="wrap">
+        <div class="section-title">
+          <span class="hand">для любой компании</span>
+          <h2>Настольные игры</h2>
+        </div>
+        <p class="center">В коллекции 50 игр. Нажмите на игру, чтобы прочитать описание.</p>
+        <div class="field" style="max-width:420px;margin:0 auto 16px">
+          <label for="game-search">Поиск по названию</label>
+          <input class="search" type="search" id="game-search" placeholder="Например, мафия" autocomplete="off">
+        </div>
+        <p class="small muted center" id="game-count" aria-live="polite"></p>
+        <div class="grid-cards" id="games"></div>
+      </div>
+    </section>
+
+    <!-- PlayStation -->
+    <section class="section band" id="ps">
+      <div class="wrap">
+        <div class="section-title">
+          <span class="hand">6 игр на выбор</span>
+          <h2>PlayStation</h2>
+        </div>
+        <div class="grid-3" id="ps-list"></div>
+      </div>
+    </section>
+
+    <!-- Книги -->
+    <section class="section">
+      <div class="wrap grid-2" style="align-items:center">
+        <div>
+          <h2>Книги</h2>
+          <p>Небольшая уютная коллекция: выберите книгу, устройтесь на диване и читайте в тишине или за чашкой чая.</p>
+          <ul class="list-check">
+            <li>Современные романы и проза</li>
+            <li>Классика в разных изданиях</li>
+            <li>Коллекционные и старые книги</li>
+            <li>Лёгкие книги для отдыха и книги для размышлений</li>
+          </ul>
+          <p class="small muted">Книги — для чтения на месте. Полный список можно посмотреть в творческом пространстве.</p>
+        </div>
+        <img src="img/photo-sofas.jpg" alt="Диваны для чтения" loading="lazy" style="border-radius:22px;box-shadow:var(--shadow);aspect-ratio:4/3;object-fit:cover;width:100%">
+      </div>
+    </section>
+
+    <!-- Мероприятия -->
+    <section class="section band-2">
+      <div class="wrap">
+        <div class="section-title">
+          <span class="hand">следите за афишей</span>
+          <h2>Мероприятия</h2>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <img class="card-img" src="img/anime-evening.jpg" alt="Афиша аниме-вечера: живая музыка и кино" loading="lazy" style="object-position:50% 22%">
+            <div class="card-body">
+              <h3>Аниме-вечер</h3>
+              <p class="small">Живая музыка (гитара и синтезатор, 40 минут), голосование за аниме и просмотр фильма-победителя (около 90 минут). Сладости от партнёров — магазина «Драконий базар». Косплей приветствуется.</p>
+              <p class="small"><b>Вход 550 ₽ · 3–3,5 часа</b></p>
+            </div>
+          </article>
+          <article class="card">
+            <img class="card-img" src="img/photo-kvartirnik.jpg" alt="Квартирник в творческом пространстве" loading="lazy">
+            <div class="card-body">
+              <h3>Квартирник с открытым микрофоном</h3>
+              <p class="small">Живая музыка: гитара и вокал. Можно спеть самому или сыграть на инструменте. Настолки, PlayStation, чай, кофе и печенье — включены.</p>
+              <p class="small"><b>250 ₽ с человека · 3 часа</b></p>
+              <a class="small" href="https://vk.cc/d1TUSK" target="_blank" rel="noopener">Подробнее в ВК ↗</a>
+            </div>
+          </article>
+          <article class="card">
+            <div class="no-img">Киновечер</div>
+            <div class="card-body">
+              <h3>Киновечер</h3>
+              <p class="small">Уютный просмотр фильма на большом экране в лавандовой атмосфере.</p>
+              <p class="small"><b>200 ₽ с человека</b> · длительность <span class="todo">[уточнить]</span></p>
+              <p class="small">Хотите свой фильм своей компанией? <a href="prazdniki.html">Аренда кинозала →</a></p>
+            </div>
+          </article>
+        </div>
+        <p class="center small muted" style="margin-top:14px">Даты вечеров — в <a href="index.html#afisha">афише</a> и в группе ВК. Запись — через администратора.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="data/games.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Источник PlayStation: база знаний «PlayStation.docx». Настолки — data/games.js (каталог группы ВК).
+    const PS = [
+      ["Resident Evil Revelations 2", "survival horror, кооператив", "1–2", "18+", "10–15 часов", "Кооперативный хоррор с головоломками, монстрами и мрачной атмосферой."],
+      ["Mortal Kombat 11", "файтинг", "1–2", "18+", "5–10 часов", "Файтинг с уникальными бойцами, зрелищными боями и фаталити."],
+      ["The Quarry", "интерактивный хоррор", "1–8", "18+", "10–12 часов", "Решения игроков влияют на судьбу героев; несколько концовок."],
+      ["It Takes Two", "кооперативное приключение", "2", "10+", "10–15 часов", "Игра для двоих: головоломки, необычные уровни и история пары."],
+      ["Cyberpunk 2077", "RPG, открытый мир", "1", "18+", "30–50 часов", "Масштабная RPG в Найт-Сити: технологии, задания и моральные выборы."],
+      ["Kingdom Come: Deliverance", "реалистичная средневековая RPG", "1", "18+", "не указана", "Исторический сюжет, средневековый мир и сложные бои."],
+    ];
+    console.assert(GAMES.length === 50, "в коллекции 50 игр");
+
+    // Настолки карточками: фото img/games/<id>.jpg (если photo: true в data/games.js) или название на плашке; по нажатию — описание в окне.
+    const list = document.getElementById("games");
+    const count = document.getElementById("game-count");
+    const norm = (s) => s.toLowerCase().replace(/ё/g, "е");
+    const meta = (g) => [g.players && `${g.players} игроков`, g.age, g.time].filter(Boolean).join(" · ");
+    const gameCover = (g, cls) => g.photo ? `<img class="${cls}" src="img/games/${g.id}.jpg" alt="" loading="lazy">` : `<div class="no-img">${esc(g.title)}</div>`;
+    const drawGames = (q = "") => {
+      const found = GAMES.filter((g) => norm(g.title).includes(norm(q.trim())));
+      list.innerHTML = found.map((g) => `
+        <article class="card">
+          <button class="card-link" type="button" data-game="${g.id}" aria-label="${esc(g.title)}: описание">
+            ${gameCover(g, "card-img")}
+            <div class="card-body"><h3>${esc(g.title)}</h3><div class="small muted">${esc(meta(g))}</div></div>
+          </button>
+        </article>`).join("") || '<p class="empty center">Не нашли такую игру — спросите администратора.</p>';
+      count.textContent = q ? `Найдено: ${found.length} из ${GAMES.length}` : `Всего игр: ${GAMES.length}`;
+    };
+    list.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-game]");
+      if (!b) return;
+      const g = GAMES.find((x) => x.id === b.dataset.game);
+      openModal(`
+        <div class="mk-detail">
+          ${gameCover(g, "mk-cover")}
+          <h2>${esc(g.title)}</h2>
+          <p class="muted small">${esc(meta(g))}</p>
+          ${g.about ? g.about.split(/\n\s*\n/).map((p) => `<p>${esc(p).replace(/\n/g, "<br>")}</p>`).join("") : '<p class="muted">Описание <span class="todo">[уточнить]</span></p>'}
+          <p class="small muted" style="margin-top:14px">Входит в посещение творческого пространства — спросите игру у администратора.</p>
+        </div>`);
+    });
+    document.getElementById("game-search").addEventListener("input", (e) => drawGames(e.target.value));
+    drawGames();
+
+    document.getElementById("ps-list").innerHTML = PS.map(([n, genre, players, age, dur, about]) => `
+      <div class="plate paper">
+        <h3>${n}</h3>
+        <p class="small">${about}</p>
+        <p class="small" style="margin:0"><span class="tag">${genre}</span></p>
+        <p class="small" style="margin:8px 0 0">Игроки: <b>${players}</b> · Возраст: <b>${age}</b> · Длительность: <b>${dur}</b></p>
+      </div>`).join("");
+  </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Лавандовая ветвь — мини-приложение</title>
+  <meta name="description" content="Афиша, мастер-классы, тарифы и праздники творческого пространства «Лавандовая ветвь», Пермь.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pangolin&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- ?v= — номер правки: телефон не берёт старую копию стилей из кэша -->
+  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/app.css?v=23">
+</head>
+<!-- VK мини-приложение: те же данные и запись, что на сайте (data/*.js, booking.js), в 4 вкладках. ТЗ — ../ПРОМПТ-МИНИ-АПП.md -->
+<body class="app">
+  <!-- Шапка как на главной сайта: сцена с домиком и совой, дым из трубы и чашки; сова в мини-аппе неподвижна (без owl-head) -->
+  <section class="hero">
+    <div class="hero-art">
+      <img class="hero-scene" src="img/art/hero-scene.jpg" alt="Сказочный домик — творческое пространство в лавандовом поле, совушка и чашка чая" width="1920" height="1071">
+      <div class="hero-fx" aria-hidden="true">
+        <div class="smoke" style="--x:262;--y:0;--w:290;--h:122"><img src="img/art/hero-scene.jpg" alt=""><i style="--l:14%;--d:0s"></i><i style="--l:18%;--d:2.3s"></i><i style="--l:12%;--d:4.6s"></i></div>
+        <div class="smoke steam" style="--x:1215;--y:245;--w:270;--h:430"><img src="img/art/hero-scene.jpg" alt=""></div>
+        <!-- нарисованные птицы шапки летают по небу: pb-cover закрашивает птицу на картинке цветом неба,
+             а её вырезка (img/art/bird-N.png) кружит по своей траектории (css/app.css). Координаты — левый верхний угол вырезки -->
+        <i class="pb-cover" style="--x:1271;--y:72;--w:49;--h:31"></i>
+        <i class="pb-cover" style="--x:649;--y:94;--w:32;--h:24"></i>
+        <i class="pb-cover" style="--x:699;--y:115;--w:49;--h:31"></i>
+        <i class="pb-cover" style="--x:1425;--y:188;--w:42;--h:25"></i>
+        <i class="pb-cover" style="--x:709;--y:277;--w:51;--h:26"></i>
+        <img class="pbird" src="img/art/bird-1.png" alt="" style="--w:49;--path:pb1;--t:19s">
+        <img class="pbird" src="img/art/bird-2.png" alt="" style="--w:32;--path:pb2;--t:15s">
+        <img class="pbird" src="img/art/bird-3.png" alt="" style="--w:49;--path:pb3;--t:22s">
+        <img class="pbird" src="img/art/bird-4.png" alt="" style="--w:42;--path:pb4;--t:17s">
+        <img class="pbird" src="img/art/bird-5.png" alt="" style="--w:51;--path:pb5;--t:20s">
+        <!-- дополнительные птицы: те же вырезки, мельче (дальше), без пятна-заплатки — на картинке их нет -->
+        <img class="pbird" src="img/art/bird-1.png" alt="" style="--w:34;--path:pb6;--t:18s">
+        <img class="pbird" src="img/art/bird-3.png" alt="" style="--w:30;--path:pb7;--t:21s">
+        <img class="pbird" src="img/art/bird-4.png" alt="" style="--w:28;--path:pb8;--t:16s">
+        <img class="pbird" src="img/art/bird-2.png" alt="" style="--w:26;--path:pb9;--t:23s">
+      </div>
+      <svg class="fx-defs" width="0" height="0" aria-hidden="true">
+        <filter id="smoke-wave" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.016 0.035" numOctaves="1" seed="4" result="n">
+            <animate attributeName="baseFrequency" dur="6s" values="0.016 0.035;0.028 0.055;0.016 0.035" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <filter id="steam-soft" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.016 0.035" numOctaves="1" seed="7" result="n">
+            <animate attributeName="baseFrequency" dur="9s" values="0.016 0.035;0.022 0.045;0.016 0.035" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Как на главной сайта: бумажный лист заходит на низ сцены, лаванда по бокам тянется вниз и гаснет за следующими блоками -->
+  <div class="app-stage">
+  <img class="app-side l" src="img/art/side-left-tall.jpg" alt="" aria-hidden="true">
+  <img class="app-side r" src="img/art/side-right-tall.jpg" alt="" aria-hidden="true">
+  <div class="hero-text paper-frame">
+    <h1><span class="hand">творческое пространство в Перми</span>Лавандовая ветвь</h1>
+    <p>Уютное место для весёлых дней и тёплых вечеров.<br><span class="small" data-today></span></p>
+    <div class="btns">
+      <a class="btn" href="#afisha">Записаться на мастер-класс</a>
+      <a class="btn btn-outline" href="prazdniki.html">Праздник под ключ</a>
+    </div>
+  </div>
+
+  <main id="app-main">
+    <section class="app-tab" id="afisha" aria-labelledby="t-afisha">
+      <div class="app-title"><span class="hand">запишитесь онлайн</span><h1>Афиша</h1></div>
+      <div data-afisha></div>
+    </section>
+
+    <section class="app-tab" id="mk" aria-labelledby="t-mk" hidden>
+      <div class="app-title"><span class="hand">творим своими руками</span><h1>Мастер-классы</h1>
+        <p class="small">Материалы, помощь мастера, чай, кофе, печенье и Wi-Fi уже входят в стоимость.</p></div>
+      <div data-catalog></div>
+    </section>
+
+    <section class="app-tab" id="tarify" aria-labelledby="t-tarify" hidden>
+      <div class="app-title"><span class="hand">платите за время, а не за чай</span><h1>Тарифы</h1></div>
+      <div class="plate plum">
+        <span class="tag">Тариф №1</span>
+        <h2>«Посиделки»</h2>
+        <p class="price">150 ₽/час в будни (пн–пт)<br>180 ₽/час в выходные (сб–вс)</p>
+        <p class="small">Цена с человека. Общий зал: отдохнуть, поработать или поиграть.</p>
+        <div class="plate butter"><b>С 4-го часа — бесплатно.</b> Вы платите только за первые три часа.</div>
+        <p class="small">Входит: чай, кофе, печенье, конфеты, настольные игры и книги, PlayStation, Wi-Fi.</p>
+      </div>
+      <div class="plate peach">
+        <span class="tag" style="background:#fff">Тариф №2</span>
+        <h2>«Свой зал»</h2>
+        <p class="price">1 000 ₽/час в будни (пн–пт)<br>1 500 ₽/час в выходные (сб–вс)</p>
+        <p class="small">Всё помещение, до 30 человек. Цена не зависит от количества гостей. Входит: чай, кофе, печенье, конфеты, настольные игры, PlayStation, проектор, Wi-Fi.</p>
+      </div>
+      <h2 class="app-sub">Скидки</h2>
+      <ul class="list-check">
+        <li>Студентам — 10% по студенческому билету</li>
+        <li>Пенсионерам — 7% по пенсионному удостоверению</li>
+        <li>Имениннику — бесплатное посещение за 7 дней до и 7 дней после дня рождения (паспорт или свидетельство о рождении)</li>
+        <li>Компании именинника — 10% на аренду зала, мастер-классы и мероприятия</li>
+        <li>Впервые у нас — D&amp;D-лотерея: бросьте кубик и получите скидку на следующее посещение (размер скидки <span class="todo">[уточнить]</span>)</li>
+      </ul>
+      <h2 class="app-sub">Как нас найти</h2>
+      <div class="plate paper app-contacts" data-contacts></div>
+      <p class="small muted">Можно приносить свою еду и напитки. Нельзя курить и приносить алкоголь.</p>
+    </section>
+
+    <section class="app-tab" id="prazdniki" aria-labelledby="t-prazdniki" hidden>
+      <div class="app-title"><span class="hand">весь зал ваш</span><h1>Праздники и аренда</h1>
+        <p class="small">Арендуйте зал под праздник, встречу или просто посиделки. А если хочется программу — у нас есть готовые наборы.</p></div>
+      <div class="plate peach">
+        <h2>Аренда зала</h2>
+        <ul class="list-check">
+          <li>праздник, посиделки, встреча, игра, кино с друзьями</li>
+          <li>от 1 часа · до 30 гостей</li>
+          <li>1 000 ₽/час в будни, 1 500 ₽/час в выходные</li>
+          <li>своя еда и украшения — пожалуйста; просим только без алкоголя и курения</li>
+        </ul>
+        <p class="small">Входит: чай, кофе, печенье, конфеты, настолки, PlayStation, проектор, Wi-Fi.</p>
+        <a class="btn btn-block" href="#zayavka" data-rent>Забронировать зал</a>
+      </div>
+      <div class="app-title" style="margin-top:22px"><span class="hand">можем предложить</span><h2 class="app-sub" style="margin:0">Уютные наборы</h2>
+        <p class="small">Готовые сочетания: зал + мастер-класс, квест или всё сразу.</p></div>
+      <div class="app-sets">
+        <article class="card"><img class="card-img" src="img/set-1-mini.jpg" alt="" loading="lazy"><div class="card-body"><span class="tag">Набор №1 · Mini</span><p>Аренда зала на 1 час + мастер-класс на выбор.</p><div class="price">от 1 900 ₽</div></div></article>
+        <article class="card"><img class="card-img" src="img/set-2-midi.jpg" alt="" loading="lazy"><div class="card-body"><span class="tag peach">Набор №2 · Midi</span><p>Аренда зала на 1 час + квест-игра «12 записок».</p><div class="price">от 6 000 ₽</div></div></article>
+        <article class="card"><img class="card-img" src="img/set-3-maxi.jpg" alt="" loading="lazy"><div class="card-body"><span class="tag mint">Набор №3 · Maxi</span><p>Аренда зала на 1 час + творческий мастер-класс + квест «12 записок».</p><div class="price">от 9 000 ₽</div></div></article>
+      </div>
+      <p class="small muted">Цены «от» — расчёт для будней и 6 человек. Точная сумма зависит от даты, количества гостей и программы.</p>
+      <div class="plate plum">
+        <h3>Аренда кинозала</h3>
+        <p class="price">1 000 ₽ в будни · 1 500 ₽ в выходные</p>
+        <p class="small">За сеанс, а не за человека. Свой фильм на большом экране, до 30 человек. Можно принести свою еду и безалкогольные напитки.</p>
+      </div>
+      <div class="plate peach"><b>Скидка 10%</b> компании, которая отмечает день рождения: на аренду зала, мастер-классы и мероприятия.</div>
+      <h2 class="app-sub" id="zayavka">Заявка</h2>
+      <form class="form plate paper" data-party-form novalidate></form>
+    </section>
+  </main>
+  </div>
+
+  <nav class="app-nav" aria-label="Разделы">
+    <a href="#afisha" id="t-afisha"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Афиша</a>
+    <a href="#mk" id="t-mk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19l9-9M14 10l2-5 3 3-5 2zM5 19l-1 2"/></svg>МК</a>
+    <a href="#tarify" id="t-tarify"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5zM17 10h1a2 2 0 0 1 0 4h-1M9 3c0 2 2 2 2 4"/></svg>Тарифы</a>
+    <a href="#prazdniki" id="t-prazdniki"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0"/></svg>Праздники</a>
+  </nav>
+
+  <script src="https://unpkg.com/@vkontakte/vk-bridge@2.14.1/dist/browser.min.js"></script>
+  <script src="data/mk.js?v=7"></script>
+  <script src="data/afisha.js?v=4"></script>
+  <script src="js/main.js?v=4"></script>
+  <script src="js/booking.js?v=4"></script>
+  <script src="js/mk-page.js?v=4"></script>
+  <script src="js/prazdnik.js?v=5"></script>
+  <script src="js/app.js?v=6"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+/* VK мини-приложение (app.html): компактная шапка, вкладки, нижняя панель. Остальное — из style.css. */
+/* фон «Рассвет → слива»: сверху кремовое небо картинки, дальше светлая лаванда, к низу вкладки — плавно в сливу.
+   Те же точки цвета повторены в js/app.js (BG_STOPS): по ним надписи на фоне выбирают тёмный или светлый текст */
+.app { padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  background: var(--eminence) linear-gradient(var(--paper) 0, var(--lav-pale) 420px, var(--lav-soft) 30%, var(--eminence) 100%); }
+/* надпись на тёмной части фона — светлая, как на сливовых полосах сайта (.band) */
+.app .on-dark, .app .on-dark h1, .app .on-dark h2, .app .on-dark h3, .app h1.on-dark, .app h2.on-dark { color: var(--card); text-shadow: 0 1px 3px rgba(51, 12, 75, .55); }
+.app .on-dark .hand, .app .on-dark.muted, .app .on-dark .muted, .app .on-dark .small { color: var(--maize); }
+/* в середине перехода фон средне-сливовый — тёмным надписям даём самый тёмный цвет палитры */
+.app .app-tab > .app-title:not(.on-dark) .hand { color: var(--eminence); }
+.app .app-tab > :is(.app-title, .app-sub, p, ul > li):not(.on-dark) { color: var(--deep); }
+.app .app-tab > :is(.app-title):not(.on-dark) :is(h1, h2, p) { color: var(--deep); }
+.app .on-dark a:not(.btn) { color: var(--maize); }
+.app li.on-dark::before { color: var(--maize); text-shadow: none; }
+
+/* шапка как на главной сайта: сцена целиком в самом верху; бумажный лист с названием заходит на её низ,
+   лаванда по бокам (side-left/right.jpg) продолжает сцену вниз и гаснет за следующими блоками */
+.app .hero { padding-top: 0; }
+.app .hero-art { margin-top: 0; -webkit-mask-image: none; mask-image: none; }
+.app-stage { position: relative; }
+.app-side {
+  position: absolute; top: -24px; width: 70px; height: 440px; object-fit: cover; pointer-events: none;
+  /* сверху — плавный заход на сцену без шва, снизу — сходит на нет; к центру экрана тоже гаснет (на телефоне лист её не прячет) */
+  --fade-x: to right;
+  -webkit-mask-image: linear-gradient(transparent, #000 24px, #000 32%, transparent), linear-gradient(var(--fade-x), #000 45%, transparent);
+  mask-image: linear-gradient(transparent, #000 24px, #000 32%, transparent), linear-gradient(var(--fade-x), #000 45%, transparent);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+}
+.app-side.l { left: 0; object-position: 100% 0; }
+.app-side.r { right: 0; object-position: 0 0; --fade-x: to left; }
+/* «Праздники»: лаванда ярче и гаснет позже — рядом с заголовком «Праздники и аренда» (≈320–460px под шапкой) ещё зелень.
+   Картинки удлинённые (side-*-tall.jpg: низ с листьями продолжен плавной склейкой), поэтому показываются мельче — контуры тонкие */
+.app[data-tab="prazdniki"] .app-side {
+  height: 520px; filter: saturate(1.15) brightness(1.03);
+  -webkit-mask-image: linear-gradient(transparent, #000 24px, #000 72%, transparent), linear-gradient(var(--fade-x), #000 55%, transparent);
+  mask-image: linear-gradient(transparent, #000 24px, #000 72%, transparent), linear-gradient(var(--fade-x), #000 55%, transparent);
+}
+/* текст рядом с яркой лавандой: подзаголовок не заходит на листья, заголовок со светлым ореолом */
+.app[data-tab="prazdniki"] #prazdniki > .app-title:first-child p { padding-inline: 34px; }
+.app[data-tab="prazdniki"] #prazdniki > .app-title:first-child:not(.on-dark) :is(h1, .hand) { text-shadow: 0 0 6px var(--lav-pale), 0 0 14px var(--lav-pale); }
+.app .hero-text.paper-frame { position: relative; z-index: 1; max-width: 608px; margin: -26px 14px 0; padding: 18px 14px 20px; }
+@media (min-width: 640px) { .app .hero-text.paper-frame { margin-inline: auto; } }
+.app-stage > main { position: relative; z-index: 1; }
+
+/* Нарисованные птицы шапки летают по небу между домом и совой.
+   pb-cover — пятно цвета неба (--paper совпадает с небом картинки) поверх птицы на картинке;
+   .pbird — вырезка птицы; каждая кружит по своей замкнутой петле (left/top в долях сцены 1920×1071,
+   петля начинается и кончается на её родном месте) и машет крыльями */
+.pb-cover {
+  width: calc(var(--w) / 1920 * 100%); height: calc(var(--h) / 1071 * 100%); background: var(--paper);
+  -webkit-mask-image: radial-gradient(closest-side, #000 75%, transparent); mask-image: radial-gradient(closest-side, #000 75%, transparent);
+}
+.pbird { width: calc(var(--w) / 1920 * 100%); height: auto; max-width: none;
+  animation: var(--path) var(--t) ease-in-out infinite, bird-flap .5s ease-in-out infinite alternate; transform-origin: 50% 60%; }
+@keyframes bird-flap { from { transform: scaleY(1); } to { transform: scaleY(.55); } }
+/* птицы с самого начала разнесены по небу: слева над домиком, справа над совой, в центре — и каждая кружит
+   по небольшой петле в своей зоне (не залетая на трубу, крышу и сову) */
+@keyframes pb1 { 0% { left: 80%; top: 4%; } 25% { left: 85%; top: 7%; } 50% { left: 80%; top: 10%; } 75% { left: 75%; top: 6%; } 100% { left: 80%; top: 4%; } }   /* справа */
+@keyframes pb2 { 0% { left: 24%; top: 3%; } 25% { left: 28%; top: 5%; } 50% { left: 24%; top: 7%; } 75% { left: 20%; top: 4.5%; } 100% { left: 24%; top: 3%; } }  /* слева */
+@keyframes pb3 { 0% { left: 44%; top: 4%; } 25% { left: 47%; top: 6.5%; } 50% { left: 44%; top: 9%; } 75% { left: 40%; top: 6.5%; } 100% { left: 44%; top: 4%; } }   /* центр, слева от логотипа */
+@keyframes pb4 { 0% { left: 70%; top: 18%; } 25% { left: 73%; top: 15%; } 50% { left: 70%; top: 12%; } 75% { left: 67%; top: 15%; } 100% { left: 70%; top: 18%; } } /* центр, справа от логотипа */
+@keyframes pb5 { 0% { left: 40%; top: 16%; } 25% { left: 45%; top: 19%; } 50% { left: 40%; top: 22%; } 75% { left: 35%; top: 18%; } 100% { left: 40%; top: 16%; } }  /* центр, слева ниже */
+/* ещё четыре птицы помельче заполняют пустое небо между домиком и совой */
+@keyframes pb6 { 0% { left: 54%; top: 24%; } 25% { left: 58%; top: 27%; } 50% { left: 54%; top: 30%; } 75% { left: 50%; top: 27%; } 100% { left: 54%; top: 24%; } }   /* центр */
+@keyframes pb7 { 0% { left: 34%; top: 6%; } 25% { left: 37%; top: 8%; } 50% { left: 34%; top: 10%; } 75% { left: 31%; top: 8%; } 100% { left: 34%; top: 6%; } }        /* над крышей */
+@keyframes pb8 { 0% { left: 68%; top: 4%; } 25% { left: 71%; top: 6%; } 50% { left: 68%; top: 8%; } 75% { left: 65%; top: 6%; } 100% { left: 68%; top: 4%; } }         /* справа вверху */
+@keyframes pb9 { 0% { left: 47%; top: 34%; } 25% { left: 50%; top: 31%; } 50% { left: 47%; top: 28%; } 75% { left: 44%; top: 31%; } 100% { left: 47%; top: 34%; } } /* центр ниже */
+/* без анимаций птицы сидят на своих местах, как на картинке */
+@media (prefers-reduced-motion: reduce) { .pbird, .pb-cover { display: none; } }
+
+/* плашка «Слива» (тариф «Посиделки», аренда кинозала): выделяется на светлом фоне, цвета — из палитры сайта */
+.app .plate.plum { background: var(--eminence); color: var(--card); }
+.app .plate.plum h2, .app .plate.plum h3, .app .plate.plum .price { color: var(--maize); }
+.app .plate.plum .small { color: var(--lav-soft); }
+.app .plate.plum .plate { color: var(--ink); }
+/* на сливовом низу фона сливовые плашки не сливаются с ним: тонкая светлая кайма */
+.app .plate.plum { box-shadow: 0 0 0 2px rgba(238, 218, 165, .45), var(--shadow); }
+
+.app-tab { max-width: 640px; margin: 0 auto; padding: 16px 16px 24px; }
+.app-tab > .plate, .app-tab > .list-check, .app-tab > .form { margin-bottom: 14px; }
+.app-title { text-align: center; margin-bottom: 14px; }
+.app-title h1 { font-size: 30px; margin: 0; }
+.app-title p { margin: 6px 0 0; }
+.app-sub { font-size: 22px; margin: 22px 0 10px; }
+.app-tab .plate h2 { margin: 8px 0 4px; font-size: 24px; }
+.app-tab .plate .plate { margin: 10px 0; }
+.app-sets { display: grid; gap: 14px; margin-bottom: 10px; }
+.app-contacts p { margin: 4px 0; }
+
+/* в приложении всё в одну колонку: календарь афиши и каталог не раскладываются на десктопную сетку */
+.app .diary { display: block; }
+.app .diary .cal { display: none; }
+.app .grid-cards { grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 380px) { .app .grid-cards { grid-template-columns: 1fr; } }
+
+.app-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex;
+  padding-bottom: env(safe-area-inset-bottom); background: var(--eminence);
+  border-top: 2px solid rgba(238, 218, 165, .35); box-shadow: 0 -6px 18px rgba(51, 12, 75, .25);
+}
+.app-nav a {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 60px; justify-content: center;
+  color: var(--lav-soft); font: 700 12px/1 var(--font-body); text-decoration: none;
+}
+.app-nav svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.app-nav a[aria-current="page"] { color: var(--maize); }
+.app-nav a[aria-current="page"] svg { stroke-width: 2.4; }
+.app-nav a:focus-visible { outline: 3px solid var(--maize); outline-offset: -3px; }

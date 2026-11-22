@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сотрудничество — Лавандовая ветвь</title>
+  <meta name="description" content="Проведите свой мастер-класс, станьте аниматором или ведущим настольных игр в творческом пространстве «Лавандовая ветвь».">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pangolin&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header id="site-header"></header>
+
+  <main>
+    <section class="page-head" data-sprigs>
+      <div class="wrap">
+        <span class="hand">давайте творить вместе</span>
+        <h1>Сотрудничество</h1>
+        <p>Выберите направление и заполните заявку. Администрация свяжется с вами в течение 7 рабочих дней, чтобы обсудить детали.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:24px">
+      <div class="wrap" style="max-width:720px">
+        <div class="chips" role="group" aria-label="Направление" id="coop-tabs">
+          <button class="chip" data-tab="mk" aria-pressed="true">Провести свой МК</button>
+          <button class="chip" data-tab="animator" aria-pressed="false">Стать аниматором</button>
+          <button class="chip" data-tab="host" aria-pressed="false">Ведущий настолок</button>
+        </div>
+
+        <div data-panel="mk">
+          <form class="form plate paper" novalidate>
+            <h2 style="font-size:24px">Хочу провести свой мастер-класс</h2>
+            <div class="field"><label for="mk-name">Имя</label><input type="text" id="mk-name" autocomplete="name" required><p class="err">Напишите имя</p></div>
+            <div class="field"><label for="mk-phone">Телефон</label><input type="tel" id="mk-phone" autocomplete="tel" required><p class="err">Нужен телефон</p></div>
+            <div class="field"><label for="mk-topic">Какой мастер-класс: тема и формат</label><textarea id="mk-topic" required></textarea><p class="err">Расскажите о мастер-классе</p></div>
+            <div class="field"><label for="mk-works">Примеры работ или ссылки на них</label><textarea id="mk-works" placeholder="Ссылки на фото, соцсети, портфолио" required></textarea><p class="err">Добавьте примеры или ссылки</p></div>
+            <div data-consent-slot></div>
+            <button class="btn btn-block" type="submit">Отправить заявку</button>
+          </form>
+        </div>
+
+        <div data-panel="animator" hidden>
+          <form class="form plate paper" novalidate>
+            <h2 style="font-size:24px">Хочу стать аниматором</h2>
+            <div class="field"><label for="an-name">Имя</label><input type="text" id="an-name" autocomplete="name" required><p class="err">Напишите имя</p></div>
+            <div class="field"><label for="an-phone">Телефон</label><input type="tel" id="an-phone" autocomplete="tel" required><p class="err">Нужен телефон</p></div>
+            <div class="field"><label for="an-exp">Опыт работы аниматором: где и как долго</label><textarea id="an-exp" required></textarea><p class="err">Расскажите об опыте</p></div>
+            <div class="field"><label for="an-prog">Какие программы проводили</label><textarea id="an-prog" required></textarea><p class="err">Перечислите программы</p></div>
+            <div class="field"><label for="an-cost">Есть ли костюмы</label><textarea id="an-cost" placeholder="Какие костюмы есть" required></textarea><p class="err">Напишите про костюмы</p></div>
+            <div data-consent-slot></div>
+            <button class="btn btn-block" type="submit">Отправить заявку</button>
+          </form>
+        </div>
+
+        <div data-panel="host" hidden>
+          <form class="form plate paper" novalidate>
+            <h2 style="font-size:24px">Хочу стать ведущим настольных игр</h2>
+            <div class="field"><label for="ho-name">Имя</label><input type="text" id="ho-name" autocomplete="name" required><p class="err">Напишите имя</p></div>
+            <div class="field"><label for="ho-phone">Телефон</label><input type="tel" id="ho-phone" autocomplete="tel" required><p class="err">Нужен телефон</p></div>
+            <div class="field"><label for="ho-exp">Опыт работы ведущим (если есть)</label><textarea id="ho-exp"></textarea></div>
+            <div class="field"><label for="ho-games">Какие настольные игры знаете и готовы вести</label><textarea id="ho-games" required></textarea><p class="err">Перечислите игры</p></div>
+            <div data-consent-slot></div>
+            <button class="btn btn-block" type="submit">Отправить заявку</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section band">
+      <div class="wrap center" style="max-width:720px">
+        <h2>Хочу в команду творческого пространства</h2>
+        <p>Сейчас штат полностью укомплектован, новых сотрудников мы не ищем. Следите за новостями в группе ВК — в будущем могут появиться вакансии.</p>
+        <a class="btn btn-outline" href="https://vk.com/club233037297" target="_blank" rel="noopener">Группа ВКонтакте</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="js/main.js"></script>
+  <script>
+    document.querySelectorAll("[data-panel]").forEach((panel) => {
+      const form = panel.querySelector("form");
+      form.querySelector("[data-consent-slot]").outerHTML = CONSENT(panel.dataset.panel + "-consent");
+      demoForm(form, '<h3>Заявка принята (демо)</h3><p>Ответим в течение 7 рабочих дней.</p><p class="small muted">Заявка не гарантирует сотрудничество.</p>');
+    });
+    const tabs = document.getElementById("coop-tabs");
+    tabs.addEventListener("click", (e) => {
+      const t = e.target.closest("[data-tab]");
+      if (!t) return;
+      tabs.querySelectorAll("[data-tab]").forEach((c) => c.setAttribute("aria-pressed", c === t));
+      document.querySelectorAll("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== t.dataset.tab; });
+    });
+  </script>
+</body>
+</html>
