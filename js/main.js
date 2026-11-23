@@ -22,7 +22,11 @@ const NAV = [
   ["sotrudnichestvo.html", "Сотрудничество"],
 ];
 
-const WAVE = '<svg class="wave" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true"><path d="M0 34V18c80-14 160-16 240-6s170 18 260 6 170-22 260-12 160 18 240 10 140-14 200-6v24z"/></svg>';
+// Кромки (волна, трава) — картинки-фоны с цветом внутри SVG: тёмный режим браузера (Dark Reader, «тёмная тема сайтов»)
+// перекрашивает CSS-цвета и currentColor в чёрный/серый, а цвет внутри фоновой картинки не трогает
+const svgUrl = (svg) => `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+const WAVE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0 34V18c80-14 160-16 240-6s170 18 260 6 170-22 260-12 160 18 240 10 140-14 200-6v24z"/></svg>';
+const wave = (color, cls = "") => `<div class="wave${cls}" aria-hidden="true" style='background-image:${svgUrl(WAVE_SVG.replace("<svg ", `<svg fill="${color}" `))}'></div>`;
 const SPRIG = '<svg viewBox="0 0 60 140" aria-hidden="true"><path d="M30 138C30 100 31 60 34 8" stroke="#7d9a6a" stroke-width="2.4" fill="none"/><g fill="currentColor">' +
   [12, 22, 32, 42, 52, 62, 74].map((y, i) => `<ellipse cx="${i % 2 ? 39 : 27}" cy="${y}" rx="6" ry="9" transform="rotate(${i % 2 ? 28 : -28} ${i % 2 ? 39 : 27} ${y})"/>`).join("") +
   '</g><path d="M30 110c-10-8-16-20-18-30M31 96c9-6 14-16 15-26" stroke="#7d9a6a" stroke-width="2" fill="none"/></svg>';
@@ -60,7 +64,7 @@ function renderHeader() {
 function renderFooter() {
   const el = document.getElementById("site-footer");
   if (!el) return;
-  el.insertAdjacentHTML("beforebegin", WAVE.replace('class="wave"', 'class="wave footer-wave"'));
+  el.insertAdjacentHTML("beforebegin", wave(getComputedStyle(document.documentElement).getPropertyValue("--deep").trim(), " footer-wave"));
   el.className = "site-footer";
   el.innerHTML = `
     <div class="wrap">
@@ -92,14 +96,13 @@ function renderFooter() {
 // Травяная кромка (страницы с <body data-edge="grass">): плитка травинок 240×48, повторяется по ширине;
 // цвет задаёт фон элемента, форму — маска, поэтому трава всегда в цвет соседнего блока.
 const GRASS_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" width="240" height="48"><path d="M2.0 45Q2.9 23.2 2.9 5.4Q6.2 25.2 8.0 45ZM7.6 45Q9.3 29.6 10.4 17.0Q14.3 31.0 16.5 45ZM14.9 45Q17.7 29.4 21.2 16.7Q22.7 30.9 23.9 45ZM21.8 45Q23.7 34.4 25.2 25.7Q28.8 35.4 31.1 45ZM28.9 45Q31.7 37.5 35.2 31.4Q36.5 38.2 37.7 45ZM35.3 45Q36.6 25.1 36.4 8.8Q41.9 26.9 45.0 45ZM41.9 45Q44.7 27.0 48.1 12.3Q50.0 28.7 51.6 45ZM48.6 45Q50.6 23.4 52.1 5.7Q55.9 25.4 58.2 45ZM54.6 45Q55.9 32.9 55.8 23.0Q61.0 34.0 63.9 45ZM60.5 45Q63.7 33.5 68.7 24.2Q68.0 34.6 68.2 45ZM67.2 45Q68.1 23.9 67.2 6.7Q73.0 25.8 76.1 45ZM73.0 45Q74.8 30.0 76.3 17.7Q79.3 31.4 81.2 45ZM78.6 45Q80.6 37.5 82.0 31.4Q85.9 38.2 88.2 45ZM84.6 45Q86.8 23.1 89.1 5.3Q91.6 25.1 93.3 45ZM90.1 45Q91.6 33.7 92.5 24.5Q95.8 34.7 97.7 45ZM96.4 45Q98.5 29.6 101.2 17.1Q102.6 31.0 103.7 45ZM102.1 45Q105.6 30.8 110.5 19.3Q110.9 32.1 111.7 45ZM109.0 45Q111.1 29.9 113.3 17.5Q115.8 31.3 117.5 45ZM116.0 45Q119.1 31.9 123.0 21.1Q124.5 33.0 125.8 45ZM121.8 45Q123.4 32.6 124.3 22.5Q128.0 33.7 130.1 45ZM128.0 45Q129.1 23.9 128.7 6.7Q134.1 25.8 137.1 45ZM135.4 45Q136.0 31.7 135.1 20.8Q139.4 32.9 141.7 45ZM140.7 45Q143.6 34.8 147.0 26.4Q149.0 35.7 150.6 45ZM146.1 45Q147.0 28.6 146.4 15.2Q151.3 30.1 153.9 45ZM153.9 45Q157.4 23.7 162.5 6.3Q162.6 25.6 163.4 45ZM161.6 45Q162.4 33.9 161.2 24.7Q167.3 34.9 170.6 45ZM167.3 45Q169.2 38.4 171.6 33.0Q172.7 39.0 173.6 45ZM173.0 45Q175.8 30.3 179.4 18.3Q180.8 31.7 182.0 45ZM178.7 45Q180.7 34.5 182.2 25.9Q186.0 35.5 188.3 45ZM186.4 45Q186.5 30.3 184.7 18.3Q190.1 31.7 192.9 45ZM194.2 45Q194.9 23.2 193.6 5.3Q199.6 25.2 202.7 45ZM201.9 45Q203.7 22.4 205.9 3.9Q207.5 24.5 208.6 45ZM208.9 45Q209.8 34.7 209.5 26.3Q213.7 35.7 216.0 45ZM215.6 45Q217.7 25.7 220.7 9.9Q221.2 27.5 221.8 45ZM222.7 45Q223.6 37.9 222.8 32.0Q228.0 38.5 230.7 45ZM230.5 45Q233.3 27.1 237.7 12.4Q236.9 28.7 237.0 45ZM60 42q-14-6-20-20q14 2 20 20zM170 42q-14-6-20-20q14 2 20 20zM0 44H240V48H0Z"/></svg>';
-const grassEdge = (color, over) => `<div class="edge-grass${over ? " over" : ""}" aria-hidden="true" style="background-color:${color}"></div>`;
+const grassEdge = (color, over) => `<div class="edge-grass${over ? " over" : ""}" aria-hidden="true" style='background-image:${svgUrl(GRASS_SVG.replace("<svg ", `<svg fill="${color}" `))}'></div>`;
 // цвет фона блока; прозрачный блок — цвет страницы
 const bgOf = (el) => { const c = el && getComputedStyle(el).backgroundColor; return !c || c === "rgba(0, 0, 0, 0)" || c === "transparent" ? getComputedStyle(document.body).backgroundColor : c; };
 
 // Края цветных секций (волна или трава) и веточки лаванды в заголовках.
 function decorate() {
   const grass = document.body.dataset.edge === "grass";
-  if (grass) document.documentElement.style.setProperty("--grass", `url("data:image/svg+xml,${encodeURIComponent(GRASS_SVG)}")`);
   const footer = document.getElementById("site-footer");
   document.querySelectorAll(".band, .band-2, .band-fawn").forEach((s) => {
     const color = getComputedStyle(s).backgroundColor;
@@ -109,8 +112,8 @@ function decorate() {
       s.insertAdjacentHTML("afterend", grassEdge(bgOf(s.nextElementSibling || footer), true));
       return;
     }
-    s.insertAdjacentHTML("beforebegin", WAVE.replace('class="wave"', `class="wave" style="color:${color}"`));
-    s.insertAdjacentHTML("afterend", WAVE.replace('class="wave"', `class="wave flip" style="color:${color}"`));
+    s.insertAdjacentHTML("beforebegin", wave(color));
+    s.insertAdjacentHTML("afterend", wave(color, " flip"));
   });
   if (grass) {
     // волну над подвалом тоже меняем на траву; если перед подвалом уже стоит травяная кромка — волна не нужна

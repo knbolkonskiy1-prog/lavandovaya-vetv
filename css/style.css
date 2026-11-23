@@ -84,9 +84,9 @@ p { margin: 0 0 1em; }
 .band-fawn { background: var(--fawn); }
 .band-fawn .hand { color: var(--eminence); }
 .plate, .card { color: var(--ink); }
-.wave { display: block; width: 100%; height: 34px; }
+/* волна — фон-картинка с цветом внутри (js/main.js, wave()), растянута на всю ширину */
+.wave { display: block; width: 100%; height: 34px; background: no-repeat 0 0 / 100% 100%; }
 .wave.flip { transform: rotate(180deg); }
-.wave path { fill: currentColor; }
 
 /* Кнопки */
 .btn {
@@ -626,7 +626,7 @@ legend { font-weight: 800; color: var(--deep); margin-bottom: 6px; padding: 0; f
 /* Травяная кромка между блоками (страницы с body[data-edge="grass"], плитку задаёт main.js) */
 .edge-grass {
   height: 46px; margin-bottom: -1px;
-  -webkit-mask: var(--grass) left bottom / 240px 48px repeat-x; mask: var(--grass) left bottom / 240px 48px repeat-x;
+  background: repeat-x left bottom / 240px 48px;
 }
 .edge-grass.over { position: relative; z-index: 1; margin-top: -46px; }
 
