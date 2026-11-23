@@ -27,7 +27,7 @@ const NAV = [
 const svgUrl = (svg) => `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 const WAVE_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0 34V18c80-14 160-16 240-6s170 18 260 6 170-22 260-12 160 18 240 10 140-14 200-6v24z"/></svg>';
 const wave = (color, cls = "") => `<div class="wave${cls}" aria-hidden="true" style='background-image:${svgUrl(WAVE_SVG.replace("<svg ", `<svg fill="${color}" `))}'></div>`;
-const SPRIG = '<svg viewBox="0 0 60 140" aria-hidden="true"><path d="M30 138C30 100 31 60 34 8" stroke="#7d9a6a" stroke-width="2.4" fill="none"/><g fill="currentColor">' +
+const SPRIG = '<svg viewBox="0 0 60 140" aria-hidden="true"><path d="M30 138C30 100 31 60 34 8" stroke="#7d9a6a" stroke-width="2.4" fill="none"/><g fill="#B9379D">' +
   [12, 22, 32, 42, 52, 62, 74].map((y, i) => `<ellipse cx="${i % 2 ? 39 : 27}" cy="${y}" rx="6" ry="9" transform="rotate(${i % 2 ? 28 : -28} ${i % 2 ? 39 : 27} ${y})"/>`).join("") +
   '</g><path d="M30 110c-10-8-16-20-18-30M31 96c9-6 14-16 15-26" stroke="#7d9a6a" stroke-width="2" fill="none"/></svg>';
 
@@ -326,7 +326,7 @@ function garlandFrame(box) {
   svg.setAttribute("class", "garland-frame");
   svg.setAttribute("aria-hidden", "true");
   box.prepend(svg);
-  box.insertAdjacentHTML("beforeend", '<img class="lav-corner l" src="img/art/lav-corner-l.png" alt=""><img class="lav-corner r" src="img/art/lav-corner-r.png" alt="">');
+  box.insertAdjacentHTML("beforeend", '<img class="lav-corner l" src="img/art/lav-corner-l.png" alt="" loading="lazy"><img class="lav-corner r" src="img/art/lav-corner-r.png" alt="" loading="lazy">');
   const draw = () => {
     const w = box.offsetWidth, h = box.offsetHeight, m = 6, r = 30;
     if (!w || !h) return;
@@ -354,7 +354,7 @@ function catPaw(grid) {
   grid.prepend(layer);
   const COIN = '<svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="13.5" fill="#F2C14E" stroke="#9A6B1E" stroke-width="1.5"/><circle cx="15" cy="15" r="9.5" fill="none" stroke="#C9922F" stroke-width="1.2"/><text x="15" y="20" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="13" fill="#8A5A12">₽</text><path d="M8 10a9 9 0 0 1 6-4" stroke="#FFF1C4" stroke-width="2" stroke-linecap="round" fill="none"/></svg>';
   // чёрная лапа — вырезана из картинки-образца (img/art/cat-paw.png); рука продлевается полосой .fur
-  const PAW = '<img src="img/art/cat-paw.png" alt="">';
+  const PAW = '<img src="img/art/cat-paw.png" alt="" loading="lazy">';
   // голова чёрного кота смотрит влево (для правой карточки отражается)
   const CAT = `<svg viewBox="0 0 100 96">${CAT_HEAD}</svg>`;
   const arm = document.createElement("div");

@@ -612,7 +612,7 @@ legend { font-weight: 800; color: var(--deep); margin-bottom: 6px; padding: 0; f
 /* ---------- Декор и появление ---------- */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.shown { opacity: 1; transform: none; }
-.sprig { position: absolute; width: 64px; height: auto; opacity: .75; pointer-events: none; color: var(--sunset); }
+.sprig { position: absolute; width: 64px; height: auto; opacity: .75; pointer-events: none; } /* цвет соцветий (--sunset) вписан в SPRIG, js/main.js */
 .sprig.l { left: 4px; top: 10px; transform: rotate(-18deg); }
 .sprig.r { right: 4px; top: 10px; transform: scaleX(-1) rotate(-18deg); }
 @media (max-width: 600px) { .sprig { width: 38px; opacity: .5; } }
