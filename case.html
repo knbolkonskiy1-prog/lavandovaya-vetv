@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="only light">
+  <meta name="darkreader-lock">
+  <title>Кейс: мини-приложение ВКонтакте для «Лавандовой ветви»</title>
+  <meta name="description" content="Кейс: мини-приложение ВКонтакте для творческого пространства «Лавандовая ветвь» в Перми. Запись на мастер-класс в два касания и калькулятор праздника.">
+  <link rel="preload" href="fonts/nunito-cyrillic-XRXV3I6Li01BKofIMeaBXso.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/pangolin-cyrillic-cY9GfjGcW0FPpi-tWMfJ79zqiA.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Стили только страницы кейса. Цвета, шрифты, кнопки и плашки — из css/style.css; акцент проекта — --sunset */
+    /* Тёмный фон кейса (вариант C «Лаванда»): глубокий фиолетовый --deep, веточки лаванды из приложения по углам первого экрана */
+    body { background: var(--deep); color: var(--lav-soft); position: relative; }
+    body::before, body::after { content: ""; position: absolute; top: 0; width: min(28vw, 380px); height: 520px; pointer-events: none;
+      background: no-repeat top / contain; opacity: .9;
+      -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
+    body::before { left: 0; background-image: url(img/art/lav-corner-l.png); background-position: left top; }
+    body::after { right: 0; background-image: url(img/art/lav-corner-r.png); background-position: right top; }
+    @media (max-width: 600px) { body::before, body::after { width: 90px; height: 260px; opacity: .55; } }
+    .case { position: relative; z-index: 1; }
+    .case h1, .case h2, .case section > h3, .step-text h3, .lever-plate h3, .save { color: var(--card); }
+    .case h1 .accent, .case .hand { color: var(--maize); }
+    .lead, .step-text p, .roi li, .price-line, .cta-text, .case section > p, .lever-plate p { color: var(--lav-soft); }
+    .done li, .gift, .gift p { color: var(--ink); } /* кремовые карточки — тёмный текст */
+    .case .btn:not(.btn-outline) { background: var(--fawn); color: var(--deep); border-color: var(--fawn); box-shadow: 0 4px 0 #8A4F36; }
+    .case .btn:not(.btn-outline):hover { background: #EDBBA0; }
+    .case { max-width: 1040px; margin: 0 auto; padding: 40px 16px 64px; }
+    .case section { margin-top: 64px; }
+    .case h1 { font-size: clamp(30px, 6vw, 52px); line-height: 1.3; max-width: 18ch; }
+    .case h1 .accent { color: var(--sunset); }
+    .case h2 { margin-bottom: 20px; }
+    .lead { font-size: 19px; max-width: 62ch; }
+    .case .btns { margin-top: 24px; }
+
+    /* «За 1 неделю я сделал» */
+    .done { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    .done li { position: relative; padding: 14px 16px 14px 50px; background: var(--card); border-radius: 18px; box-shadow: var(--shadow); }
+    .done li::before { content: ""; position: absolute; left: 16px; top: 16px; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--sunset) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 16px no-repeat; }
+    .done b { color: var(--deep); }
+
+    /* «Это работает так» */
+    .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 40px; counter-reset: step; }
+    .step { display: grid; gap: 16px; align-items: center; }
+    .step-text { counter-increment: step; }
+    .step-text h3 { font-size: 22px; margin-bottom: 6px; }
+    .step-text h3::before { content: counter(step) ". "; color: var(--sunset); }
+    .step img { border-radius: 18px; box-shadow: 0 0 0 2px rgba(238, 218, 165, .35), 0 10px 30px rgba(0, 0, 0, .35); background: var(--card); }
+    .step.lever .step-text h3::before { content: "🎯 " counter(step) ". "; }
+    @media (min-width: 820px) {
+      .step { grid-template-columns: 1fr 1.5fr; gap: 32px; }
+      .step:nth-child(even) .step-text { order: 2; }
+    }
+
+    /* «Мобильная версия» */
+    .phones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 760px; margin: 0 auto; }
+    .phones img { border-radius: 22px; border: 6px solid var(--eminence); box-shadow: var(--shadow); }
+    @media (min-width: 700px) { .phones { gap: 28px; } .phones img { border-width: 8px; border-radius: 30px; } }
+
+    /* «Итог»: плашка главного рычага — рамка акцентом 45%, фон акцентом 6% (на тёмном фоне акцент — маис) */
+    .lever-plate { border: 2px solid rgba(238, 218, 165, .45); background: rgba(238, 218, 165, .06); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; }
+    .lever-plate .tag { background: var(--maize); color: var(--deep); }
+    .lever-plate h3 { margin: 10px 0 6px; font-size: 22px; }
+    .roi { counter-reset: roi; list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .roi li { counter-increment: roi; position: relative; padding-left: 36px; }
+    .roi li::before { content: counter(roi); position: absolute; left: 0; top: 1px; width: 26px; height: 26px; border-radius: 50%;
+      background: var(--maize); color: var(--deep); font: 800 14px/26px var(--font-body); text-align: center; }
+    .assume { color: #B9A3C4; font-style: italic; }
+
+    /* «Срок и стоимость» */
+    .price-line { font-size: 18px; text-align: center; margin: 0; }
+    .gift-badge { display: block; width: fit-content; margin: 28px auto 0; padding: 14px 34px; border-radius: 999px;
+      background: var(--sunset); color: #fff; font: 800 30px/1.3 var(--font-body);
+      animation: gift-pulse 1.8s ease-in-out infinite; }
+    @media (min-width: 768px) { .gift-badge { font-size: 48px; } }
+    @keyframes gift-pulse {
+      0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(185, 55, 157, .55); }
+      50%  { transform: scale(1.06); box-shadow: 0 0 0 18px rgba(185, 55, 157, 0); }
+      100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(185, 55, 157, 0); }
+    }
+    @media (prefers-reduced-motion: reduce) { .gift-badge { animation: none; } }
+    .gifts { display: grid; gap: 16px; margin-top: 28px; }
+    @media (min-width: 768px) { .gifts { grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; } }
+    .gift { position: relative; background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); padding: 20px 52px 20px 20px; }
+    .gift h3 { font-family: var(--font-body); font-weight: 800; font-size: 19px; margin-bottom: 6px; }
+    .gift .price { font-weight: 800; color: var(--eminence); margin: 8px 0 0; }
+    /* неоновая галочка маркером — только на телефоне */
+    .gift .neon-check { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px;
+      filter: drop-shadow(0 0 3px var(--sunset)) drop-shadow(0 0 8px var(--sunset)); }
+    @media (min-width: 768px) {
+      .gift { padding-right: 20px; border-color: var(--sunset); box-shadow: 0 0 18px var(--sunset), inset 0 0 12px var(--sunset); }
+      .gift .neon-check { display: none; }
+    }
+    .save { text-align: center; font-size: 22px; font-weight: 800; color: var(--deep); margin: 28px 0 8px; }
+    .cta-text { text-align: center; font-size: 19px; max-width: 40ch; margin: 0 auto; }
+    .center-btns { justify-content: center; }
+    .stack { margin-top: 48px; text-align: center; }
+  </style>
+</head>
+<body>
+  <main class="case">
+
+    <!-- 1. Первый экран кейса -->
+    <header>
+      <span class="hand">Кейс, мини-приложение ВКонтакте для «Лавандовой ветви», Пермь</span>
+      <h1>Запись на мастер-класс в два касания, <span class="accent">прямо во&nbsp;ВКонтакте</span></h1>
+      <p class="lead">Расписание мастер-классов теряется в ленте постов, и гости не находят свободную дату. В мини-приложении афиша, свободные места и запись собраны в одном окне ВКонтакте.</p>
+      <div class="btns">
+        <a class="btn" href="https://knbolkonskiy1-prog.github.io/lavandovaya-vetv/app.html" target="_blank" rel="noopener">Открыть мини-приложение</a>
+        <a class="btn btn-outline" href="https://t.me/Votre_kn_abb" target="_blank" rel="noopener">Хочу такое же приложение</a>
+      </div>
+    </header>
+
+    <!-- 2. Что сделано -->
+    <section aria-labelledby="h-done">
+      <h2 id="h-done">За 1 неделю я сделал</h2>
+      <ul class="done">
+        <li><b>Афишу по дням со свободными местами:</b> гость сразу видит, куда ещё можно попасть.</li>
+        <li><b>Запись и оплату картой или СБП в одном окне:</b> гостю не нужно писать администратору и ждать ответа.</li>
+        <li><b>Каталог из 25 мастер-классов с ценами и фото:</b> выбор без переписки в личных сообщениях.</li>
+        <li><b>Кнопку «Хочу на этот МК» для мастер-классов без даты:</b> контакт заинтересованного гостя не теряется.</li>
+        <li><b>Калькулятор праздника с заявкой без предоплаты:</b> гость сам видит сумму и бронирует дату.</li>
+        <li><b>Тарифы, скидки и контакты в отдельной вкладке:</b> ответы на частые вопросы без участия администратора.</li>
+        <li><b>Иллюстрированную шапку в стиле бренда:</b> приложение узнают с первого экрана.</li>
+      </ul>
+    </section>
+
+    <!-- 3. Воронка по блокам приложения -->
+    <section aria-labelledby="h-how">
+      <h2 id="h-how">Это работает так</h2>
+      <ol class="steps">
+        <li class="step">
+          <div class="step-text"><h3>Первый экран, два пути</h3><p>Гость сразу выбирает мастер-класс или праздник. Не нужно листать ленту в поисках нужного поста.</p></div>
+          <img src="public/case/d-01-hero.webp" width="1000" height="900" alt="Первый экран мини-приложения: иллюстрация с домиком и совой, кнопки «Записаться на мастер-класс» и «Праздник под ключ»" loading="lazy">
+        </li>
+        <li class="step">
+          <div class="step-text"><h3>Афиша по дням</h3><p>Снимает вопрос «а когда ближайший?»: дни с событиями отмечены точкой, свободные места видны сразу.</p></div>
+          <img src="public/case/d-02-afisha.webp" width="1000" height="900" alt="Афиша: лента дней, мастер-класс «Лавандовое варенье», свободно 6 из 6" loading="lazy">
+        </li>
+        <li class="step">
+          <div class="step-text"><h3>Запись и оплата сразу</h3><p>Снимает «надо писать в личку и ждать»: участники, детская скидка и итог считаются в одном окне, оплата картой или СБП.</p></div>
+          <img src="public/case/d-03-booking.webp" width="1000" height="900" alt="Окно записи: имя, телефон, число участников, итог 450 ₽, кнопка «Оплатить 450 ₽»" loading="lazy">
+        </li>
+        <li class="step">
+          <div class="step-text"><h3>Каталог мастер-классов</h3><p>Снимает «что у вас есть и сколько стоит»: 25 мастер-классов с ценой, длительностью и фото, фильтр по темам.</p></div>
+          <img src="public/case/d-04-mk.webp" width="1000" height="900" alt="Каталог мастер-классов: карточки с обложками и ценами, фильтры по темам" loading="lazy">
+        </li>
+        <li class="step">
+          <div class="step-text"><h3>Тарифы и скидки</h3><p>Снимает «сколько стоит просто посидеть»: два тарифа и скидки студентам, пенсионерам и имениннику.</p></div>
+          <img src="public/case/d-05-tarify.webp" width="1000" height="900" alt="Тарифы «Посиделки» и «Свой зал» с ценами за час" loading="lazy">
+        </li>
+        <li class="step">
+          <div class="step-text"><h3>Готовые наборы праздника</h3><p>Снимает «праздник сложно организовать»: три набора, в которые уже входят зал, мастер-класс или квест, с ценой «от».</p></div>
+          <img src="public/case/d-06-sets.webp" width="1000" height="900" alt="Уютные наборы для праздника: Mini, Midi, Maxi" loading="lazy">
+        </li>
+        <li class="step lever">
+          <div class="step-text"><h3>Калькулятор праздника</h3><p>Снимает страх неизвестной суммы: гость выбирает формат, часы и число гостей и сразу видит цену. Заявка уходит без предоплаты, администратор только подтверждает дату.</p></div>
+          <img src="public/case/d-07-lever.webp" width="1000" height="900" alt="Заявка на праздник: выбраны допуслуги, предварительная сумма от 6 000 ₽" loading="lazy">
+        </li>
+      </ol>
+    </section>
+
+    <!-- 4. Мобильная версия -->
+    <section aria-labelledby="h-mob">
+      <h2 id="h-mob">Мобильная версия</h2>
+      <p>Приложение сделано в первую очередь для телефона: им пользуются прямо из сообщества ВКонтакте.</p>
+      <div class="phones">
+        <img src="public/case/m-01-hero.webp" width="780" height="1688" alt="Первый экран на телефоне" loading="lazy">
+        <img src="public/case/m-02-sets.webp" width="780" height="1688" alt="Наборы праздника с ценой на телефоне" loading="lazy">
+        <img src="public/case/m-03-lever.webp" width="780" height="1688" alt="Калькулятор праздника на телефоне: от 6 000 ₽" loading="lazy">
+      </div>
+    </section>
+
+    <!-- 5. Итог -->
+    <section aria-labelledby="h-result">
+      <h2 id="h-result">Итог</h2>
+      <div class="lever-plate">
+        <span class="tag">Главный рычаг</span>
+        <h3>Калькулятор праздника с заявкой без предоплаты</h3>
+        <p>Гость видит сумму до звонка и бронирует дату, не внося деньги, поэтому первый шаг почти ничего не стоит. Я выбрал этот механизм, потому что он ведёт к самому крупному чеку в приложении, ≈&nbsp;6&nbsp;000&nbsp;₽.</p>
+      </div>
+      <h3>Расчётная модель окупаемости</h3>
+      <ol class="roi">
+        <li>Вводные: средний чек праздника ≈&nbsp;6&nbsp;000&nbsp;₽, около 7 праздников в месяц, приложение ≈&nbsp;60&nbsp;000&nbsp;₽. <span class="assume">Допущение: рычаг добавляет 10–30% заявок на праздники.</span></li>
+        <li>Приложение за ≈&nbsp;60&nbsp;000&nbsp;₽ окупается с 10 праздников при чеке ≈&nbsp;6&nbsp;000&nbsp;₽.</li>
+        <li>Плюс 10–30% к 7 праздникам в месяц дают 0,7–2,1 праздника сверху, это ≈&nbsp;4&nbsp;200–12&nbsp;600&nbsp;₽ в месяц. <span class="assume">Это допущение, а не результат клиента.</span></li>
+        <li>Окупаемость ≈&nbsp;5–15 месяцев только на праздниках, без учёта записи на мастер-классы.</li>
+      </ol>
+    </section>
+
+    <!-- 6. Срок и стоимость -->
+    <section aria-labelledby="h-price">
+      <h2 id="h-price" class="center">Срок и стоимость</h2>
+      <p class="price-line">Срок: 1 неделя, стоимость ≈&nbsp;60&nbsp;000&nbsp;₽</p>
+      <span class="gift-badge">🎁 В подарок</span>
+      <div class="gifts">
+        <article class="gift">
+          <svg class="neon-check" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 17c3 2 5 5 7 8 4-8 9-14 15-19" fill="none" stroke="#B9379D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>🎁 Telegram-бот для администратора</h3>
+          <p>Присылает в Telegram каждую заявку и запись из приложения, ни одна не потеряется в сообщениях.</p>
+          <p class="price">≈&nbsp;10&nbsp;000&nbsp;₽</p>
+        </article>
+        <article class="gift">
+          <svg class="neon-check" viewBox="0 0 32 32" aria-hidden="true"><path d="M5 17c3 2 5 5 7 8 4-8 9-14 15-19" fill="none" stroke="#B9379D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>🎁 15 рилсов для сообщества</h3>
+          <p>Короткие ролики о мастер-классах и праздниках, которые ведут гостей в приложение.</p>
+          <p class="price">≈&nbsp;15&nbsp;000&nbsp;₽</p>
+        </article>
+      </div>
+      <!-- Экономия = 10 000 + 15 000. Источник цен: FL.ru, ноябрь 2026 — Telegram-бот приёма заявок с уведомлением администратору 3 900–23 400 ₽ (взято ≈ 10 000 ₽); монтаж Reels от 1 000 ₽ за ролик, 15 × 1 000 = 15 000 ₽ -->
+      <p class="save">Экономия ≈&nbsp;25&nbsp;000&nbsp;₽</p>
+      <p class="cta-text">Хотите так же для своего творческого пространства — запишитесь на бесплатную консультацию!</p>
+      <div class="btns center-btns">
+        <a class="btn" href="https://t.me/Votre_kn_abb" target="_blank" rel="noopener">Записаться на консультацию</a>
+        <a class="btn btn-outline" href="https://knbolkonskiy1-prog.github.io/lavandovaya-vetv/app.html" target="_blank" rel="noopener">Смотреть сайт</a>
+      </div>
+    </section>
+
+    <!-- 7. Стек -->
+    <p class="small stack" style="color:#B9A3C4">Стек: HTML, CSS, JavaScript без сборщиков, VK Bridge, GitHub Pages.</p>
+  </main>
+</body>
+</html>
